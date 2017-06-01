@@ -1,4 +1,4 @@
-package com.rs.dp.lc;
+package com.rs.tech.questions;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -8,10 +8,11 @@ import java.util.Set;
 /**
  * Created by Ravi Sharma on 3/7/2017.
  */
-public class LongestCommonSubString {
+public class P001_LongestCommonSubString {
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(Thread.currentThread().getContextClassLoader().getResourceAsStream("dp/lc/LongestCommonSubString-Input.txt"));
+        Scanner sc = new Scanner(Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                "input/LongestCommonSubString-Input.txt"));
         String S = sc.next();
         String T = sc.next();
         Set<String> set = AllCommonSubStr(S, T);
