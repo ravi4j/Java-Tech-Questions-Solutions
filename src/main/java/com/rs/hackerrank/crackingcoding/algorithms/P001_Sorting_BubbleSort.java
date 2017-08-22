@@ -1,4 +1,4 @@
-package com.rs.harkerrank.crackingcoding.algorithms;
+package com.rs.hackerrank.crackingcoding.algorithms;
 
 import java.util.Scanner;
 

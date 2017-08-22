@@ -1,4 +1,4 @@
-package com.rs.harkerrank.crackingcoding.datastructures;
+package com.rs.hackerrank.crackingcoding.datastructures;
 
 import java.util.HashMap;
 import java.util.Map;
