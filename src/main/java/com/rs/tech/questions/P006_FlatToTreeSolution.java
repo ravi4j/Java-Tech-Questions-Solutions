@@ -1,32 +1,4 @@
-/*
- * Copyright (c) Transplace, Inc, 2012. All rights reserved.
- * Unauthorized copying or usage of this file, via any medium is strictly prohibited.
- * Proprietary and confidential. Illegal distribution of files prohibited via any manner.
- */
-
-	/* InputObject - > Output(Text) , Answer(Text) , Conclusion(Text) , and Goto(1:Label)
-	   Indentation -> Integer
-
-	// 0 {intend  0 , output , outout }
-	// 1 {indentation  0 , output }
-	//2 {indentation  0 , output }
-		// 3 {indentation  1 , Answer {No} }
-			// 4 {indentation  2 , output  }
-			// 5 {indentation  2 , output  }
-			// 6 {indentation  2 , output  }
-				// 7 {indentation  3 , Answer }
-					// 8 {indentation  4 , Conclusion }
-					// 9 {indentation  4 , Conclusion }
-				// 10 {indentation  3 , Answer }
-		//11 {indentation  1 , Answer {Yes} }
-  		//12 {indentation  2 , GoTo {1} }
-
-   List<IndentationAndInputObject> , List<Answer>
-
-		root - { 0:0 , 1:0, 2:0 }
-		 |_  [  A{3:1 , No } , A{11:1 , Yes}  ]
-		 			|_
-	 */
+package com.rs.tech.questions;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

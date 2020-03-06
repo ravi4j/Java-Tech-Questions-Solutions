@@ -1,8 +1,4 @@
-/*
- * Copyright (c) Transplace, Inc, 2012. All rights reserved.
- * Unauthorized copying or usage of this file, via any medium is strictly prohibited.
- * Proprietary and confidential. Illegal distribution of files prohibited via any manner.
- */
+package com.rs.tech.questions;
 
 public class PrimeSolution {
 	public static void main(String[] args) {
