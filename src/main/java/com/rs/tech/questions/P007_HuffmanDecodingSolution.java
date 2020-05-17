@@ -5,144 +5,137 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
-public class HuffmanDecodingSolution {
+public class P007_HuffmanDecodingSolution {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
 
-		String test = input.next();
+        String test = input.next();
 
-		// we will assume that all our characters will have
-		// code less than 256, for simplicity
-		int[] charFreqs = new int[256];
+        // we will assume that all our characters will have
+        // code less than 256, for simplicity
+        int[] charFreqs = new int[256];
 
-		// read each character and record the frequencies
-		for (char c : test.toCharArray())
-			charFreqs[c]++;
+        // read each character and record the frequencies
+        for (char c : test.toCharArray())
+            charFreqs[c]++;
 
-		// build tree
-		Node tree = buildTree(charFreqs);
+        // build tree
+        Node tree = buildTree(charFreqs);
 
-		// print out results
-		printCodes(tree, new StringBuffer());
-		StringBuffer s = new StringBuffer();
+        // print out results
+        printCodes(tree, new StringBuffer());
+        StringBuffer s = new StringBuffer();
 
-		for (int i = 0; i < test.length(); i++) {
+        for (int i = 0; i < test.length(); i++) {
 
-			char c = test.charAt(i);
-			s.append(mapA.get(c));
+            char c = test.charAt(i);
+            s.append(mapA.get(c));
 
-		}
+        }
 
-		System.out.println(s);
-		Decoding d = new Decoding();
-		d.decode(s.toString(), tree);
+        System.out.println(s);
+        Decoding d = new Decoding();
+        d.decode(s.toString(), tree);
 
-	}
+    }
 
-	// input is an array of frequencies, indexed by character code
+    // input is an array of frequencies, indexed by character code
 
-	public static Node buildTree(int[] charFreqs) {
+    public static Node buildTree(int[] charFreqs) {
 
-		PriorityQueue<Node> trees = new PriorityQueue<Node>();
-		// initially, we have a forest of leaves
-		// one for each non-empty character
-		for (int i = 0; i < charFreqs.length; i++)
-			if (charFreqs[i] > 0)
-				trees.offer(new HuffmanLeaf(charFreqs[i], (char) i));
+        PriorityQueue<Node> trees = new PriorityQueue<Node>();
+        // initially, we have a forest of leaves
+        // one for each non-empty character
+        for (int i = 0; i < charFreqs.length; i++)
+            if (charFreqs[i] > 0)
+                trees.offer(new HuffmanLeaf(charFreqs[i], (char) i));
 
-		assert trees.size() > 0;
-		// loop until there is only one tree left
-		while (trees.size() > 1) {
-			// two trees with least frequency
-			Node a = trees.poll();
-			Node b = trees.poll();
+        assert trees.size() > 0;
+        // loop until there is only one tree left
+        while (trees.size() > 1) {
+            // two trees with least frequency
+            Node a = trees.poll();
+            Node b = trees.poll();
 
-			// put into new node and re-insert into queue
-			trees.offer(new HuffmanNode(a, b));
-		}
-		return trees.poll();
-	}
+            // put into new node and re-insert into queue
+            trees.offer(new HuffmanNode(a, b));
+        }
+        return trees.poll();
+    }
 
-	public static Map<Character, String> mapA = new HashMap<>();
+    public static Map<Character, String> mapA = new HashMap<>();
 
-	public static void printCodes(Node tree, StringBuffer prefix) {
-		assert tree != null;
+    public static void printCodes(Node tree, StringBuffer prefix) {
+        assert tree != null;
 
-		if (tree instanceof HuffmanLeaf) {
-			HuffmanLeaf leaf = (HuffmanLeaf) tree;
-			mapA.put(leaf.data, prefix.toString());
+        if (tree instanceof HuffmanLeaf) {
+            HuffmanLeaf leaf = (HuffmanLeaf) tree;
+            mapA.put(leaf.data, prefix.toString());
 
-		} else if (tree instanceof HuffmanNode) {
-			HuffmanNode node = (HuffmanNode) tree;
+        } else if (tree instanceof HuffmanNode) {
+            HuffmanNode node = (HuffmanNode) tree;
 
-			// traverse left
-			prefix.append('0');
-			printCodes(node.left, prefix);
-			prefix.deleteCharAt(prefix.length() - 1);
+            // traverse left
+            prefix.append('0');
+            printCodes(node.left, prefix);
+            prefix.deleteCharAt(prefix.length() - 1);
 
-			// traverse right
-			prefix.append('1');
-			printCodes(node.right, prefix);
-			prefix.deleteCharAt(prefix.length() - 1);
-		}
-	}
+            // traverse right
+            prefix.append('1');
+            printCodes(node.right, prefix);
+            prefix.deleteCharAt(prefix.length() - 1);
+        }
+    }
 
-}
+    static abstract class Node implements Comparable<Node> {
+        public int frequency; // the frequency of this tree
+        public char data;
+        public Node left, right;
 
-abstract class Node implements Comparable<Node> {
-	public int frequency; // the frequency of this tree
-	public char data;
-	public Node left, right;
+        public Node(int freq) {
+            frequency = freq;
+        }
 
-	public Node(int freq) {
-		frequency = freq;
-	}
+        // compares on the frequency
+        public int compareTo(Node tree) {
+            return frequency - tree.frequency;
+        }
+    }
 
-	// compares on the frequency
-	public int compareTo(Node tree) {
-		return frequency - tree.frequency;
-	}
-}
+    static class HuffmanLeaf extends Node {
 
-class HuffmanLeaf extends Node {
+        public HuffmanLeaf(int freq, char val) {
+            super(freq);
+            data = val;
+        }
+    }
 
-	public HuffmanLeaf(int freq, char val) {
-		super(freq);
-		data = val;
-	}
-}
+    static class HuffmanNode extends Node {
 
-class HuffmanNode extends Node {
+        public HuffmanNode(Node l, Node r) {
+            super(l.frequency + r.frequency);
+            left = l;
+            right = r;
+        }
 
-	public HuffmanNode(Node l, Node r) {
-		super(l.frequency + r.frequency);
-		left = l;
-		right = r;
-	}
+    }
 
-}
+    static class Decoding {
 
-class Decoding {
+        void decode(String s, Node root) {
+            Node current = root;
+            for (int i = 0; i < s.length(); i++) {
+                current = s.charAt(i) == '1' ? current.right : current.left;
+                if (current.left == null && current.right == null) {
+                    System.out.print(current.data);
+                    current = root;
+                }
+            }
+        }
 
-/*
-	class Node
-		public  int frequency; // the frequency of this tree
-    	public  char data;
-    	public  Node left, right;
-
-*/
-
-	void decode(String s, Node root) {
-		Node current = root;
-		for (int i = 0; i < s.length(); i++) {
-			current = s.charAt(i) == '1' ? current.right : current.left;
-			if (current.left == null && current.right == null) {
-				System.out.print(current.data);
-				current = root;
-			}
-		}
-	}
+    }
 
 }
+
